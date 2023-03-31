@@ -1,0 +1,39 @@
+#!/bin/bash
+
+notify() {
+    local msg
+    local is_error
+
+    msg=${1?BUG: no message}
+    is_error=${2:-0}
+
+    if command -v notify-send >/dev/null 2>&1; then
+        notify-send "btmenu" "$msg"  # TODO: escaping
+    fi
+
+    if (( is_error )); then
+        printf 'ERROR: %s\n' "$msg" >&2
+    else
+        printf '%s\n' "$msg"
+    fi
+}
+
+
+option0="Enable"
+option1="Disable"
+option2="Connect"
+option3="Disconnect"
+
+options="$option0\n$option1\n$option2\n$option3"
+chosen="$(echo -e "$options" | rofi -lines 4     -dmenu -p "Bluetooth")"
+
+case $chosen in
+    $option0)
+        echo "Enable" && rfkill unblock bluetooth && notify "Bluetooth Enabled";;
+    $option1)
+        echo "Disable" && rfkill block bluetooth && notify "Bluetooth Disabled";;
+    $option2)
+        echo "Connect" && bt_connect;;
+    $option2)
+        echo "Disconnect" && bt_connect -d;;
+esac
