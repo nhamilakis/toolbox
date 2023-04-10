@@ -27,6 +27,16 @@ error_console = Console(stderr=True, style="bold red")
 std_console = Console()
 
 
+def get_file_icon(filename: str) -> str:
+    """ Return icon corresponding to file type """
+    suffix = Path(filename).suffix
+    if suffix == ".py":
+        return "🐍"
+    # todo find more icons
+    else:
+        return "📄"
+
+
 def parse_args(argv=None):
     """ Parsing arguments """
     argv = argv if argv is not None else sys.argv[1:]
@@ -93,7 +103,7 @@ def add_children(
 
     # add all files after filtering
     for f in filter_files_gen(location, include=pattern_include, exclude=pattern_exclude):
-        root_node.add(f"📄 {f.name}")
+        root_node.add(f"{get_file_icon(f.name)} {f.name}")
 
 
 def tree_cmd(argv=None):
