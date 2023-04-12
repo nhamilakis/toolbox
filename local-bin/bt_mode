@@ -20,21 +20,27 @@ notify() {
 }
 
 
-option0="Enable"
-option1="Disable"
-option2="Connect"
-option3="Disconnect"
 
-options="$option0\n$option1\n$option2\n$option3"
-chosen="$(echo -e "$options" | rofi -lines 4 -dmenu -p "Bluetooth")"
+option0="Status"
+option1="Enable"
+option2="Disable"
+option3="Connect"
+option4="Disconnect"
+
+
+options="$option0\n$option1\n$option2\n$option3\n$option4"
+chosen="$(echo -e "$options" | rofi -lines 5 -dmenu -p "Bluetooth")"
 
 case $chosen in
-    $option0)
-        echo "Enable" && rfkill unblock bluetooth && notify "Bluetooth Enabled";;
     $option1)
+        device="$(bluetoothctl info | head -n 3)"
+        echo "Status" && echo -e "$device" | rofi -lines 4 -dmenu -p "Connected Device"
+    $option1)
+        echo "Enable" && rfkill unblock bluetooth && notify "Bluetooth Enabled";;
+    $option2)
         echo "Disable" && rfkill block bluetooth && notify "Bluetooth Disabled";;
-    $option2)
+    $option3)
         echo "Connect" && $SCRIPT_DIR/bt_connect;;
-    $option2)
+    $option4)
         echo "Disconnect" && $SCRIPT_DIR/bt_connect -d;;
 esac
