@@ -30,11 +30,11 @@ option4="Disconnect"
 
 options="$option0\n$option1\n$option2\n$option3\n$option4"
 chosen="$(echo -e "$options" | rofi -lines 5 -dmenu -p "Bluetooth")"
-device="$(bluetoothctl info | head -n 3)"
+device="$(bluetoothctl info | grep -A1 Device)"
 
 case $chosen in
-    $option1)        
-        echo "Status" && echo -e "$device" | rofi -lines 4 -dmenu -p "Connected Device";;
+    $option0)        
+        echo "Status" && rofi -e "$device";;
     $option1)
         echo "Enable" && rfkill unblock bluetooth && notify "Bluetooth Enabled";;
     $option2)
