@@ -1,4 +1,5 @@
 #!/bin/bash
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 notify() {
     local msg
@@ -25,7 +26,7 @@ option2="Connect"
 option3="Disconnect"
 
 options="$option0\n$option1\n$option2\n$option3"
-chosen="$(echo -e "$options" | rofi -lines 4     -dmenu -p "Bluetooth")"
+chosen="$(echo -e "$options" | rofi -lines 4 -dmenu -p "Bluetooth")"
 
 case $chosen in
     $option0)
@@ -33,7 +34,7 @@ case $chosen in
     $option1)
         echo "Disable" && rfkill block bluetooth && notify "Bluetooth Disabled";;
     $option2)
-        echo "Connect" && bt_connect;;
+        echo "Connect" && $SCRIPT_DIR/bt_connect;;
     $option2)
-        echo "Disconnect" && bt_connect -d;;
+        echo "Disconnect" && $SCRIPT_DIR/bt_connect -d;;
 esac
