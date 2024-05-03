@@ -1,0 +1,7 @@
+scripts/addcommit.py;addcommit
+scripts/py-run.py;
+scripts/pytree.py;
+scripts/new-env.sh;
+scripts/biblatex_check.py;
+scripts/npyless;
+scripts/link_replace.sh;
